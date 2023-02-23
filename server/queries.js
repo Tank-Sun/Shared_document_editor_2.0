@@ -1,5 +1,5 @@
-const Document = require("./Document");
-const User = require("./User");
+const Document = require("./databaseSchema/Document");
+const User = require("./databaseSchema/User");
 
 const findDocumentByUserID = async (id) => {
   let documents = [];

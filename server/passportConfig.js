@@ -1,4 +1,4 @@
-const User = require("./User");
+const User = require("./databaseSchema/User");
 const bcrypt = require("bcryptjs");
 const localStrategy = require("passport-local").Strategy;
 const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;

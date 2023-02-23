@@ -4,8 +4,8 @@ const http = require("http");
 const express = require("express");
 const socketio = require("socket.io");
 const mongoose = require("mongoose");
-const Document = require("./Document");
-const User = require("./User");
+const Document = require("./databaseSchema/Document");
+const User = require("./databaseSchema/User");
 const {
   findDocumentByUserID,
   findUserByID,
@@ -274,7 +274,7 @@ app.post("/api/users/delete", async (req, res) => {
 // gmail API
 const fs = require("fs");
 const path = require("path");
-const sendMail = require("./gmail");
+const sendMail = require("./gmailAPI/gmail");
 
 const main = async (text, email, senderName, receiverName) => {
   const options = {
