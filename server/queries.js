@@ -17,11 +17,6 @@ const findDocumentByUserID = async (id) => {
   return sortedDoc;
 };
 
-const findUserByID = async (id) => {
-  let userarry = await User.find({ _id: id });
-  return userarry;
-};
-
 const findDocumentByEmail = async (email) => {
   const users = await User.find({ email: email });
   return findDocumentByUserID(users[0]._id);
@@ -31,13 +26,6 @@ const findDocumentByEmail = async (email) => {
 const findUserByEmail = async (email) => {
   let userarry = await User.find({ email: email });
   return userarry;
-};
-
-const findByTitle = async (text) => {
-  let seachtext = await Document.find({
-    title: { $regex: text, $options: "i" },
-  });
-  return seachtext;
 };
 
 const findOrCreateDocument = async(URL, email) => {
@@ -62,10 +50,7 @@ const findOrCreateDocument = async(URL, email) => {
 };
 
 module.exports = {
-  findDocumentByUserID,
-  findUserByID,
   findDocumentByEmail,
   findUserByEmail,
-  findByTitle,
   findOrCreateDocument
 };
