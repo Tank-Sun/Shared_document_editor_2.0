@@ -22,6 +22,7 @@ module.exports = function (passport) {
       });
     })
   );
+  
   authUser = (request, accessToken, refreshToken, profile, done) => {
     return done(null, profile);
   }

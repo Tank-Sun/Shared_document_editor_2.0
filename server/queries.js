@@ -40,10 +40,32 @@ const findByTitle = async (text) => {
   return seachtext;
 };
 
+const findOrCreateDocument = async(URL, email) => {
+  const findUserarry = await findUserByEmail(email);
+
+  if (URL == null) return;
+  const document = await Document.findOne({ URL: URL });
+  if (document) {
+    if (
+      document.view_access.includes(findUserarry[0]._id) ||
+      document.view_edit_access.includes(findUserarry[0]._id)
+    ) {
+      return document;
+    }
+  }
+  return await Document.create({
+    URL: URL,
+    data: "",
+    creator: findUserarry[0]._id,
+    view_edit_access: [findUserarry[0]._id],
+  });
+};
+
 module.exports = {
   findDocumentByUserID,
   findUserByID,
   findDocumentByEmail,
   findUserByEmail,
   findByTitle,
+  findOrCreateDocument
 };
