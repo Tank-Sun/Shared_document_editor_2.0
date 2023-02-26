@@ -1,4 +1,9 @@
-# Shared document editor
+# Shared document editor 2.0
+
+**Shared document editor 2.0 is an iterative verson of shared document editor:**
+1. The code and files are refactored and restructured for better readability.
+2. TypeScript is used on server side for easier futhur upgrade and maintenance.
+3. More React hooks such as useContext are used for avoiding prop-drill and having clearer state management.
 
 Shared document editor is an online text editor that can be edited by multiple people. Create and edit text documents in your browser—no dedicated software is required. Teammates can work on a single document simultaneously; every change is saved automatically.
 
@@ -24,6 +29,7 @@ Shared document editor can use login with google authentication and share docume
 
 ## Back-end
 
+- [TypeScript](https://www.typescriptlang.org/)
 - [Node.js](https://nodejs.org/)
 - [Express](https://expressjs.com/)
 - [socket.io](https://socket.io/)
