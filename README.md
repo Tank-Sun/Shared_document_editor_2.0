@@ -1,6 +1,6 @@
 # Shared document editor 2.0
 
-**Shared document editor 2.0 is an iterative verson of shared document editor:**
+**Shared document editor 2.0 is an upgraded verson of shared document editor:**
 1. The code and files are refactored and restructured for better readability.
 2. TypeScript is used on server side for easier futhur upgrade and maintenance.
 3. More React hooks such as useContext are used for avoiding prop-drill and having clearer state management.
