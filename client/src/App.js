@@ -1,5 +1,5 @@
 import React from "react";
-import TextEditor from "./TextEditor";
+import TextEditor from "./components/TextEditor";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import Dashboard from "./components/Dashboard";

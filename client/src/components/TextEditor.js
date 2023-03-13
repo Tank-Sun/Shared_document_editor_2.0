@@ -5,7 +5,7 @@ import Quill from "quill";
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams, useLocation, Navigate } from "react-router-dom";
-import Documentheader from "./components/Header-document";
+import Documentheader from "./Header-document";
 // import { GrDocumentSound } from "react-icons/gr";
 
 const SAVE_INTERVAL_MS = 2000;
