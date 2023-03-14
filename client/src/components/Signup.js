@@ -6,7 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { GrFacebook } from "react-icons/gr";
 import { Checkbox } from "@material-tailwind/react";
 
-export default function Application() {
+export default function Signup() {
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -16,7 +16,6 @@ export default function Application() {
   const signUp = () => {
     Axios({
       method: "POST",
-      // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       data: {
         username: newUsername,
         email: newEmail,
@@ -24,51 +23,16 @@ export default function Application() {
       },
       withCredentials: true,
       url: "/api/signup",
-    }).then((res) => {
-      console.log(res);
+    }).then(() => {
+      // console.log("aaa:", res);
       navigate("/users/dashboard");
+    }).catch((err) => {
+      // console.log("bbb:", err.response.data);
+      alert(err.response.data);
     });
   };
 
   return (
-    // <section>
-    // 	<h3>Sdoc</h3>
-    // 	<h1>Sign up</h1>
-    //   <form onSubmit={event => event.preventDefault()} autoComplete="off">
-    //   <div>
-    //       <input
-    //         name="signup"
-    //         type="text"
-    //         placeholder="username"
-    //         value={newUsername}
-    //         onChange={(event) => setNewUsername(event.target.value)}
-    //       />
-    //     </div>
-    //     <div>
-    //       <input
-    //         name="signup"
-    //         type="text"
-    //         placeholder="Email"
-    //         value={newEmail}
-    //         onChange={(event) => setNewEmail(event.target.value)}
-    //       />
-    //     </div>
-    //     <div>
-    //       <input
-    //         name="signup"
-    //         type="text"
-    //         placeholder="Password"
-    //         value={newPassword}
-    //         onChange={(event) => setNewPassword(event.target.value)}
-    //       />
-    //     </div>
-    //     <div>
-    //       <button onClick={signUp}>Sign Up</button>
-    //     </div>
-    //   </form>
-
-    // 	<p>Already have an account? <a href="/login">Login</a></p>
-    // </section>
 
     <div className="relative w-full h-screen">
       <img

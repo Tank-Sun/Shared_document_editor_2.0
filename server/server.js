@@ -71,7 +71,7 @@ io.on("connection", (socket) => {
 app.post("/api/login", (req, res, next) => {
   passport.authenticate("local", (err, user) => {
     if (err) throw err;
-    if (!user) res.send("No User Exists");
+    if (!user) res.status(400).send("No User Exists");
     else {
       req.logIn(user, (err) => {
         if (err) {
@@ -97,11 +97,17 @@ app.get(
 );
 
 app.post("/api/signup", (req, res, next) => {
+  if (!req.body.email || !req.body.password || !req.body.username) {
+    return res.status(400).send("Please include username, email, AND password");
+  };
+
   User.findOne({ email: req.body.email }, async (err, doc) => {
     if (err) {
       return next(err);
-    }
-    if (doc) res.send("User Already Exists");
+    };
+
+    if (doc) {res.status(400).send("User Already Exists")};
+
     if (!doc) {
       const hashedPassword = await bcrypt.hash(req.body.password, 10);     
       const newUser = new User({
