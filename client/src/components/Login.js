@@ -4,29 +4,27 @@ import { useNavigate } from "react-router-dom";
 import loginImg from "../assets/login2.png";
 import { FcGoogle } from "react-icons/fc";
 import { GrFacebook } from "react-icons/gr";
-import { Button, Checkbox } from "@material-tailwind/react";
+import { Checkbox } from "@material-tailwind/react";
 
 export default function Login() {
-  const [loginUsername, setLoginUsername] = useState("");
+  const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
   const navigate = useNavigate();
- 
-
-
 
   const login = () => {
     Axios({
       method: "POST",
+      url: "/api/login",
       data: {
-        username: loginUsername,
-        password: loginPassword,
+        email: loginEmail,
+        password: loginPassword
       },
       withCredentials: true,
-      // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      url: "/api/login",
-    }).then((res) => {
+    }).then(() => {
       navigate("/users/dashboard");
+    }).catch((err) => {
+      alert(err.response.data);
     });
   };
 
@@ -43,7 +41,7 @@ export default function Login() {
         autoComplete="off"
       >
         <div className="z-10 max-w-[400px] mx-auto bg-white/10 p-8">
-          <h2 className="text-4xl font-bold py-4 text-center">Shared Editor</h2>
+          <h2 className="text-4xl font-bold py-4 text-center">Shared Doc Editor</h2>
           <h3 className="text-3xl pt-4 text-left">Sign In</h3>
           <div className="flex justify-between py-8">
             <div className="border shadow-lg hover:shadow-xl px-6 py-2 relative flex items-center">
@@ -54,13 +52,13 @@ export default function Login() {
               </form>
           </div>
           <div className="flex flex-col mb-4">
-            <label>Username</label>
+            <label>Email</label>
             <input
               name="login"
               type="text"
-              placeholder="Username"
-              value={loginUsername}
-              onChange={(event) => setLoginUsername(event.target.value)}
+              placeholder="Email"
+              value={loginEmail}
+              onChange={(event) => setLoginEmail(event.target.value)}
               className="border relative bg-gray-100 p-2"
             />
           </div>

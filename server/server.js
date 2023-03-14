@@ -69,6 +69,9 @@ io.on("connection", (socket) => {
 
 // Routes
 app.post("/api/login", (req, res, next) => {
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).send("Please include email AND password");
+  };
   passport.authenticate("local", (err, user) => {
     if (err) throw err;
     if (!user) res.status(400).send("No User Exists");

@@ -5,12 +5,15 @@ const GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 
 module.exports = function (passport) {
   passport.use(
-    new localStrategy((username, password, done) => {
-      User.findOne({ username: username }, (err, user) => {
+    new localStrategy({
+      usernameField: 'email',
+      passwordField: 'password'
+    }, (username, password, done) => {
+      User.findOne({ email: username }, (err, user) => {
         if (err) throw err;
         if (!user) {
           return done(null, false);
-        }
+        };
         bcrypt.compare(password, user.password, (err, result) => {
           if (err) throw err;
           if (result === true) {
