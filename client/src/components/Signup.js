@@ -24,7 +24,6 @@ export default function Signup() {
       withCredentials: true,
       url: "/api/signup",
     }).then(() => {
-      // console.log("aaa:", res);
       navigate("/users/dashboard");
     }).catch((err) => {
       alert(err.response.data);

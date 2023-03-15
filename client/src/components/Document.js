@@ -1,31 +1,12 @@
-import React, { useState } from "react";
-import Axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 export default function Document(props) {
-  // const [deleteDocument, setDeleteDocument] = useState(false);
-  //const [canDelete, setCanDelete] = useState(false);
+
   const documentLink = "/documents/" + props.url;
   const navigate = useNavigate();
-
-  // const handleDelete = (e) => {
-  //   e.stopPropagation();
-  //   setDeleteDocument(true);
-  //   Axios({
-  //     method: "POST",
-  //     data: {
-  //       id: props.id,
-  //     },
-  //     url: "/api/users/delete",
-  //   }).then((res) => {
-  //     console.log(res);
-  //   });
-  // };
-
-  //check deleteDocument state first
 
   let editor = "";
   const editorOnlyArr = props.editAccess.filter(
@@ -36,7 +17,8 @@ export default function Document(props) {
       editor = editor + e.username + " ";
     });
     editor.trimEnd();
-  }
+  };
+
   let viewer = "";
   const viewerArr = props.viewAccess;
   if (viewerArr) {
@@ -44,14 +26,13 @@ export default function Document(props) {
       viewer = viewer + e.username + " ";
     });
     viewer.trimEnd();
-  }
+  };
 
   //disable delete button when view status
-  // const vie = viewerArr.map((vie) => vie.username);
   const canDelete = () => {
-    // return vie.includes(props.user.username);
     return props.user._id === props.creatorId;
   };
+
 
   return (
     <tr
@@ -106,4 +87,4 @@ export default function Document(props) {
       </td>
     </tr>
   );
-}
+};

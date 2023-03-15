@@ -4,27 +4,18 @@ import Header from "./Header";
 import moment from "moment";
 import Document from "./Document";
 import { useNavigate } from "react-router-dom";
-// import { Button, Input, IconButton } from "@material-tailwind/react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 export default function Dashboard() {
-  // useEffect(() => {
-  //   props.fetchData
-  // })
 
   const [documents, setDocuments] = useState([]);
-  const [showDocuments, setShowDocuments] = useState([]);
-  // const [showDocuments2, setShowDocuments2] = useState([]);
+  const [showList, setShowList] = useState([]);
   const [user, setUser] = useState({});
   const [search, setSearch] = useState("");
   const [search2, setSearch2] = useState("");
-  // const [direct, setDirect] = useState("");
 
   const navigate = useNavigate();
-  
-
- 
 
   useEffect(() => {
     Axios({
@@ -33,34 +24,20 @@ export default function Dashboard() {
     })
       .then((res) => {
         setDocuments(res.data.userDocuments);
-        setShowDocuments(res.data.userDocuments);
+        setShowList(res.data.userDocuments);
         setUser(res.data.user);
-        console.log("XXXX", res.data);
-        console.log("fffff", res.data.userDocuments);
       })
       .catch((err) => {
         console.log(err.message);
       });
   }, []);
 
-  // const documents = data ? data.userDocuments.map(document => {
-  //   const dateCreated = moment(document.dateTime).format('DD-MMM-YYYY');
-  //   return (
-  //     <Document
-  //       key={document._id}
-  //       id={document._id}
-  //       url={document.URL}
-  //       creator={document.creator}
-  //       date={dateCreated}
-  //     />
-  //   );
-  // }) : <></>;
   const handleDelete = (event, Id) => {
     event.stopPropagation();
     const docList = [...documents];
     const newDocList = docList.filter((doc) => doc._id !== Id);
     setDocuments(newDocList);
-    setShowDocuments(newDocList);
+    setShowList(newDocList);
     Axios({
       method: "POST",
       data: {
@@ -69,22 +46,24 @@ export default function Dashboard() {
       url: "/api/users/delete",
     }).then((res) => {
       console.log(res);
+    }).catch((err) => {
+      console.log(err);
     });
   };
 
-  const documentsList = showDocuments.map((document) => {
-    const dateCreated = moment(document.dateTime).startOf("second").fromNow();
+  const documentsList = showList.map((doc) => {
+    const dateCreated = moment(doc.dateTime).startOf("second").fromNow();
     return (
       <Document
-        key={document._id}
-        id={document._id}
-        title={document.title}
-        url={document.URL}
-        creator={document.creator.username}
-        creatorId={document.creator._id}
-        creatorPic={document.creator.profilePic}
-        editAccess={document.view_edit_access}
-        viewAccess={document.view_access}
+        key={doc._id}
+        id={doc._id}
+        title={doc.title}
+        url={doc.URL}
+        creator={doc.creator.username}
+        creatorId={doc.creator._id}
+        creatorPic={doc.creator.profilePic}
+        editAccess={doc.view_edit_access}
+        viewAccess={doc.view_access}
         date={dateCreated}
         user={user}
         handleDelete={handleDelete}
@@ -98,14 +77,12 @@ export default function Dashboard() {
     let result = arr.filter((el) =>
       el.title.toLowerCase().includes(query.toLowerCase())
     );
-    console.log("search", result);
-    setShowDocuments(result);
+    setShowList(result);
   };
 
   const closeSearch = () => {
-    // event.stopPropagation();
     setSearch("");
-    setShowDocuments(documents);
+    setShowList(documents);
   };
 
   const searchContent = (event, arr, query) => {
@@ -128,29 +105,20 @@ export default function Dashboard() {
         }
       }
     }
-    setShowDocuments(result2);
+    setShowList(result2);
   };
 
   const closeSearch2 = () => {
-    // event.stopPropagation();
     setSearch2("");
-    setShowDocuments(documents);
+    setShowList(documents);
   };
-
-  //console.log("documents", documents);
-  //console.log("mysearch", search);
-  //console.log("mysearch2", search2);
-  //console.log("result", result);
-  //console.log("result2", result2);
-
-  // console.log("what is this", data.userDocuments);
 
   const generateRandomString = () => {
     return Math.random().toString(36).substring(2, 14);
   };
 
   const newLink = `/documents/${generateRandomString()}`;
-  // const navigate = useNavigate();
+
 
   return (
     <div className="flex flex-col">

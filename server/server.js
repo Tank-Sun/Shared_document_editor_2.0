@@ -178,7 +178,7 @@ app.post("/api/users/delete", async (req, res) => {
 // gmail API
 const sendMail = require("./gmailAPI/gmail");
 
-const main = async (text, email, senderName, receiverName) => {
+const gmailAPI = async (text, email, senderName, receiverName) => {
   const options = {
     to: email,
     subject: `Hello ${receiverName} 🚀`,
@@ -217,7 +217,7 @@ app.post("/api/send_mail", async (req, res) => {
   }
   const receiverName = receiver.username;
   addEditorByURL(sendToEmail, url, viewOnly)
-    .then(() => main(text, sendToEmail, senderName, receiverName))
+    .then(() => gmailAPI(text, sendToEmail, senderName, receiverName))
     .then((messageId) => console.log("Message sent successfully:", messageId))
     .catch((err) => console.error(err));
 });

@@ -8,12 +8,13 @@ import { faEye } from "@fortawesome/free-solid-svg-icons";
 
 
 export default function Documentheader(props) {
-  // const [sent, setSent] = useState(false);
+
   const [shareWithEmail, setShareWithEmail] = useState("");
   const [title, setTitle] = useState("");
   const [changeTittle, setChangeTittle] = useState(false);
-  const navigate = useNavigate();
   const [checked, setChecked] = useState(false);
+  
+  const navigate = useNavigate();
 
   const clickCheckbox = () => {
     setChecked(!checked);
@@ -35,7 +36,7 @@ export default function Documentheader(props) {
   };
 
   const handleSend = async () => {
-    // setSent(true);
+
     setShareWithEmail("");
     setChecked(false);
     const sendFromEmail = props.userEmail;
@@ -56,16 +57,14 @@ export default function Documentheader(props) {
         alert(res.data);
       })
       .catch((error) => {
-        // alert("Oops! Cannot find this user.")
         console.log(error);
       });
   };
 
-  const handleEnterPress = () => {
+  const handleChangeTitle = () => {
     setChangeTittle(true);
     axios({
       method: "POST",
-      // withCredentials: true,
       data: {
         title: title,
         URL: props.url,
@@ -73,10 +72,10 @@ export default function Documentheader(props) {
       url: "/api/users/changeTitle",
     }).then((res) => {
       console.log(res);
+    }).catch((err) => {
+      console.log(err);
     });
   };
-  // const ss = props.documentTitle;
-  // console.log("title", ss);
 
   let picUrl = [];
 
@@ -92,8 +91,6 @@ export default function Documentheader(props) {
     />
     );
   });
-
-
 
 
   return (
@@ -122,7 +119,7 @@ export default function Documentheader(props) {
         {!changeTittle ? (
           <>
             <h1 className="ml-2 mt-3 text-gray-700 text-2xl">Title</h1>
-            <form onSubmit={handleEnterPress}>
+            <form onSubmit={handleChangeTitle}>
               <fieldset
                 className="mx-5 md:mx-10 flex items-center px-5 py-2 bg-gray-100 text-gray-600 rounded-lg focus-within:text-gray-600 focus-within:shadow-md"
                 disabled={!canChangeTitle()}

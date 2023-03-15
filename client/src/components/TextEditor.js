@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-// import Axios from "axios";
 import Quill from "quill";
-// import QuillCursors from 'quill-cursors';
 import "quill/dist/quill.snow.css";
 import { io } from "socket.io-client";
 import { useParams, useLocation, Navigate } from "react-router-dom";
 import Documentheader from "./Header-document";
-// import { GrDocumentSound } from "react-icons/gr";
+
 
 const SAVE_INTERVAL_MS = 2000;
 
@@ -34,10 +32,6 @@ export default function TextEditor() {
 
   const location = useLocation();
 
-  // const navigate = useNavigate();
-
-  console.log("location.state: ", location.state);
-
   let userEmail;
   let userId;
   let userName;
@@ -59,31 +53,11 @@ export default function TextEditor() {
     viewerArr = location.state.viewerArr;
     creatorPic = location.state.creatorPic;
   }
-  // const userEmail = location.state.user.email;
-  // const userId = location.state.user._id;
-  // const userName = location.state.user.username;
-  // const creatorId = location.state.creatorId;
-  // const editorArr = location.state.editorArr;
 
   const editPermission = (document, id) => {
     return document.view_edit_access.includes(id);
   };
-  // console.log(location);
-  // console.log(userEmail);
 
-  //get user information
-  // const [user, setUser] = useState({});
-  // useEffect(() => {
-  //   Axios({
-  //     method: "GET",
-  //     url: "/api/users/dashboard",
-  //   }).then((res) => {
-  //     setUser(res.data.user);
-  //     console.log(res.data.user);
-  //   }).catch((err) => {
-  //     console.log(err.message);
-  //   });
-  // }, []);
 
   //connect socket
   useEffect(() => {
@@ -103,18 +77,6 @@ export default function TextEditor() {
     };
 
     quill.on("text-change", handler);
-    
-    // const cursorsOne = quill.getModule('cursors');
-    // cursorsOne.createCursor('cursor', 'User 2', 'blue');
-    // const selectionChangeHandler = (cursors) => {
-    //   return function(range, oldRange, source) {
-    //     if (source === 'user') {
-    //       cursors.moveCursor('cursor', range)
-    //     }
-    //   };
-    // };
-    
-    // quill.on('selection-change', selectionChangeHandler(cursorsOne));
 
     return () => {
       quill.off("text-change", handler);
@@ -139,17 +101,14 @@ export default function TextEditor() {
     if (socket == null || quill == null) return;
 
     socket.once("load-document", (document) => {
-      console.log("222document: ", document.title);
       setShowTittle(document.title);
 
       quill.setContents(document.data);
       if (editPermission(document, userId)) {
         quill.enable();
       }
-      console.log("editPermission", editPermission(document, userId));
     });
-    // const userEmail = location.state.user.email;
-    // console.log(userEmail);
+ 
     socket.emit("get-document", documentId, userEmail);
   }, [socket, quill, documentId, userEmail, userId]);
 
@@ -171,12 +130,10 @@ export default function TextEditor() {
     wrapper.innerHTML = "";
     const editor = document.createElement("div");
     wrapper.append(editor);
-    // Quill.register('modules/cursors', QuillCursors);
     const createQuill = new Quill(editor, {
       theme: "snow",
       modules: {
         toolbar: toolbarOptions,
-        // cursors: true,
       },
     });
     createQuill.disable();
@@ -184,7 +141,6 @@ export default function TextEditor() {
     setQuill(createQuill);
   }, []);
 
-  // const directLink = "/documents/" + documentId;
 
   if(location.state) {
     return (
