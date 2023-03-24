@@ -1,23 +1,26 @@
 require("dotenv").config();
-const PORT = process.env.PORT || 3001;
-const http = require("http");
-const express = require("express");
-const socketio = require("socket.io");
-const mongoose = require("mongoose");
-const Document = require("./databaseSchema/Document");
-const User = require("./databaseSchema/User");
-const passport = require("passport");
-const cookieParser = require("cookie-parser");
-const bcrypt = require("bcryptjs");
-const session = require("express-session");
+const PORT: string | number = process.env.PORT || 3001;
+import http from "http";
+import express from "express";
+// import socketio from "socket.io";
+import { Server } from "socket.io";
+import mongoose from "mongoose";
+import Documents from "./dbSchema/Document";
+import User from "./dbSchema/User";
+import passport from "passport";
+import cookieParser from "cookie-parser";
+import bcrypt from "bcryptjs";
+import session from "express-session";
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server);
-const {
+// const io = socketio(server);
+const io = new Server(server);
+
+import {
   findDocumentByEmail,
   findUserByEmail,
   findOrCreateDocument
-} = require("./queries");
+} from "../queries.js";
 
 
 // Middleware
@@ -37,7 +40,7 @@ require("./passportConfig")(passport);
 
 
 //create mongoose connection
-const MongoDbId = process.env.MongoDB_URL;
+const MongoDbId: string = process.env.MongoDB_URL || "";
 mongoose
   .connect(MongoDbId)
   .then(() => {
@@ -61,7 +64,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("save-document", async (data) => {
-      await Document.findOneAndUpdate({ URL: documentId }, { data: data });
+      await Documents.findOneAndUpdate({ URL: documentId }, { data: data });
     });
   });
 });
@@ -164,13 +167,13 @@ app.get("/api/users/dashboard", checkAuthenticated, async (req, res) => {
 });
 
 app.post("/api/users/changeTitle", async (req, res) => {
-  await Document.updateOne({URL: req.body.URL},{title: req.body.title});
+  await Documents.updateOne({URL: req.body.URL},{title: req.body.title});
   res.status(200);
 });
 
 //Delete document
 app.post("/api/users/delete", async (req, res) => {
-  await Document.deleteOne({ _id: req.body.id });
+  await Documents.deleteOne({ _id: req.body.id });
   res.status(200);
 });
 
@@ -197,7 +200,7 @@ const gmailAPI = async (text, email, senderName, receiverName) => {
 //add editor
 const addEditorByURL = async (email, URL, viewOnly) => {
   const editor = await findUserByEmail(email);
-  const document = await Document.findOne({ URL: URL });
+  const document = await Documents.findOne({ URL: URL });
   if (viewOnly) {
     document.view_access.push(editor[0]._id);
     const addEditor = await document.save();

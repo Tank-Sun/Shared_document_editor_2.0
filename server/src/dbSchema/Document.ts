@@ -1,4 +1,4 @@
-const { Schema, model } = require("mongoose");
+import { Schema, model } from "mongoose";
 
 const Documents = new Schema({
   URL: {
@@ -56,4 +56,4 @@ const Documents = new Schema({
   },
 });
 
-module.exports = model("Documents", Documents);
+export default model("Documents", Documents);
