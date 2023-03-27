@@ -21,10 +21,12 @@ const User = new Schema({
     default: "https://i02piccdn.sogoucdn.com/88a059cd94768c2a",
   },
 
-  documents: {
+  documents: [
+    {
     type: Schema.Types.ObjectId,
     ref: "Document",
-  },
+    }
+  ],
 });
 
 export default  model("User", User);

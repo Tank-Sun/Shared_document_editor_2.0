@@ -44,12 +44,6 @@ const Documents = new Schema({
     },
   ],
 
-  access_level: {
-    type: String,
-    enum: ["easy", "moderate", "strict"],
-    default: "easy",
-  },
-
   dateTime: {
     type: Date,
     default: Date.now,
