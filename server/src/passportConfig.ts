@@ -3,7 +3,8 @@ import bcrypt from "bcryptjs";
 import passport from "passport";
 import passportLocal from "passport-local";
 import passportGoogleOauth2, {VerifyFunctionWithRequest} from "passport-google-oauth2";
-import { UserInterface } from './Interfaces/Interface';
+import { Types} from "mongoose";
+// import { UserInterface } from './Interfaces/Interface';
 
 const LocalStrategy = passportLocal.Strategy;
 const GoogleStrategy = passportGoogleOauth2.Strategy;
@@ -16,7 +17,7 @@ declare global {
       email: string;
       password: string;
       profilePic: string;
-      documents: UserInterface[];
+      documents: Types.ObjectId[];
     }
   }
 };

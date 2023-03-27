@@ -16,11 +16,7 @@ const server = http.createServer(app);
 // const io = socketio(server);
 const io = new Server(server);
 
-import {
-  findDocumentByEmail,
-  findUserByEmail,
-  findOrCreateDocument
-} from "../queries.js";
+import {findDocumentByEmail, findUserByEmail, findOrCreateDocument} from "./queries";
 
 
 // Middleware
