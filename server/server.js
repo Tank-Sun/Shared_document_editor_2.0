@@ -176,7 +176,7 @@ app.post("/api/users/delete", async (req, res) => {
 
 
 // gmail API
-const sendMail = require("./gmailAPI/gmail");
+const sendMail = require("./gmailAPIToken/gmail");
 
 const gmailAPI = async (text, email, senderName, receiverName) => {
   const options = {

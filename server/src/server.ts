@@ -1,12 +1,13 @@
-require("dotenv").config();
+import * as dotenv from 'dotenv';
+dotenv.config();
 const PORT: string | number = process.env.PORT || 3001;
 import http from "http";
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 // import socketio from "socket.io";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
-import Documents from "./dbSchema/Document";
-import User from "./dbSchema/User";
+import Documents from "./dbSchema/Document.js";
+import User from "./dbSchema/User.js";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 import bcrypt from "bcryptjs";
@@ -15,8 +16,9 @@ const app = express();
 const server = http.createServer(app);
 // const io = socketio(server);
 const io = new Server(server);
+import { DBUser } from "./Interfaces/Interface.js";
 
-import {findDocumentByEmail, findUserByEmail, findOrCreateDocument} from "./queries";
+import {findDocumentByEmail, findUserByEmail, findOrCreateDocument} from "./queries.js";
 
 
 // Middleware
@@ -32,11 +34,12 @@ app.use(
 app.use(cookieParser("secretcode"));
 app.use(passport.initialize());
 app.use(passport.session());
-require("./passportConfig")(passport);
+import {passportConfig} from "./passportConfig.js";
+passportConfig(passport);
 
 
 //create mongoose connection
-const MongoDbId: string = process.env.MongoDB_URL || "";
+const MongoDbId = process.env.MongoDB_URL || "";
 mongoose
   .connect(MongoDbId)
   .then(() => {
@@ -71,7 +74,7 @@ app.post("/api/login", (req, res, next) => {
   if (!req.body.email || !req.body.password) {
     return res.status(400).send("Please include email AND password");
   };
-  passport.authenticate("local", (err, user) => {
+  passport.authenticate("local", (err: unknown, user: Express.User) => {
     if (err) throw err;
     if (!user) res.status(400).send("No User Exists");
     else {
@@ -103,7 +106,7 @@ app.post("/api/signup", (req, res, next) => {
     return res.status(400).send("Please include username, email, AND password");
   };
 
-  User.findOne({ email: req.body.email }, async (err, doc) => {
+  User.findOne({ email: req.body.email }, async (err: unknown, doc: DBUser) => {
     if (err) {
       return next(err);
     };
@@ -118,7 +121,7 @@ app.post("/api/signup", (req, res, next) => {
         password: hashedPassword,
       });
       await newUser.save();
-      passport.authenticate("local", (err, user) => {
+      passport.authenticate("local", (err: unknown, user: Express.User) => {
         if (err) {
           return next(err);
         }
@@ -145,7 +148,7 @@ app.post("/api/logout", function (req, res, next) {
   });
 });
 
-const checkAuthenticated = (req, res, next) => {
+const checkAuthenticated = (req: Request, res: Response, next: NextFunction) => {
   if (req.isAuthenticated()) {
     return next();
   }
@@ -153,6 +156,7 @@ const checkAuthenticated = (req, res, next) => {
 };
 
 app.get("/api/users/dashboard", checkAuthenticated, async (req, res) => {
+  if(!req.user) return res.status(401).send("Unauthorized");
   const findDocument = await findDocumentByEmail(req.user.email);
   const dataForDashboard = {
     userDocuments: findDocument,
@@ -175,9 +179,9 @@ app.post("/api/users/delete", async (req, res) => {
 
 
 // gmail API
-const sendMail = require("./gmailAPI/gmail");
+import sendMail from "./gmailAPI/gmail.js";
 
-const gmailAPI = async (text, email, senderName, receiverName) => {
+const gmailAPI = async (text: string, email: string, senderName: string, receiverName: string) => {
   const options = {
     to: email,
     subject: `Hello ${receiverName} 🚀`,
@@ -194,9 +198,11 @@ const gmailAPI = async (text, email, senderName, receiverName) => {
 };
 
 //add editor
-const addEditorByURL = async (email, URL, viewOnly) => {
+const addEditorByURL = async (email: string, URL: string, viewOnly: boolean) => {
   const editor = await findUserByEmail(email);
   const document = await Documents.findOne({ URL: URL });
+  if(!document) throw new Error("Document not found");
+
   if (viewOnly) {
     document.view_access.push(editor[0]._id);
     const addEditor = await document.save();

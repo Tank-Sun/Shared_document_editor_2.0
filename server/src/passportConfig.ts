@@ -1,4 +1,4 @@
-import User from "./dbSchema/User";
+import User from "./dbSchema/User.js";
 import bcrypt from "bcryptjs";
 import passport from "passport";
 import passportLocal from "passport-local";
@@ -22,7 +22,7 @@ declare global {
   }
 };
 
-module.exports = function (passport: passport.PassportStatic) {
+export const passportConfig = (passport: passport.PassportStatic) => {
   passport.use(
     new LocalStrategy({
       usernameField: 'email',

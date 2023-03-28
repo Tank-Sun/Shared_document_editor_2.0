@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
-import Documents from "./dbSchema/Document";
-import User from "./dbSchema/User";
-import { DBUser, DBDocuments } from "./Interfaces/Interface";
+import Documents from "./dbSchema/Document.js";
+import User from "./dbSchema/User.js";
+import { DBUser, DBDocuments } from "./Interfaces/Interface.js";
 
 const findDocumentByUserID = async (id: Types.ObjectId): Promise<DBDocuments[]> => {
   let documents: DBDocuments[] = [];
