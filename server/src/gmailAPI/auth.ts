@@ -1,5 +1,4 @@
 import * as fs from 'fs/promises';
-// const fs = require('fs').promises;
 import path from 'path';
 import process from 'process';
 import {authenticate} from '@google-cloud/local-auth';

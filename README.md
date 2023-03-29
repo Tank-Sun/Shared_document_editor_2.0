@@ -75,14 +75,20 @@ Shared document editor can use login with google authentication and share docume
 Install dependencies with `npm install`.
 ```
 
-## Running Webpack Development Server
+## Running Client Side
 
 ```sh
 npm start
 ```
 
-## Running Server
+## Running Backend Server
 
 ```sh
-npm start devStart
+npm start
+```
+
+## Running Backend Server in dev environment
+
+```sh
+npm run devStart
 ```

@@ -3,7 +3,6 @@ dotenv.config();
 const PORT: string | number = process.env.PORT || 3001;
 import http from "http";
 import express, { Request, Response, NextFunction } from "express";
-// import socketio from "socket.io";
 import { Server } from "socket.io";
 import mongoose from "mongoose";
 import Documents from "./dbSchema/Document.js";
@@ -14,7 +13,6 @@ import bcrypt from "bcryptjs";
 import session from "express-session";
 const app = express();
 const server = http.createServer(app);
-// const io = socketio(server);
 const io = new Server(server);
 import { DBUser } from "./Interfaces/Interface.js";
 
