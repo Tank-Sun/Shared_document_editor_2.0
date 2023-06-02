@@ -4,6 +4,7 @@ import passport from "passport";
 import passportLocal from "passport-local";
 import passportGoogleOauth2, {VerifyFunctionWithRequest} from "passport-google-oauth2";
 import {Types} from "mongoose";
+import { userInfo } from "os";
 
 const LocalStrategy = passportLocal.Strategy;
 const GoogleStrategy = passportGoogleOauth2.Strategy;
@@ -61,11 +62,12 @@ export const passportConfig = (passport: passport.PassportStatic) => {
 // The USER object is the "authenticated user" from the done() in authUser function.
 // serializeUser() will attach this user to "req.session.passport.user.{user}", so that it is tied to the session object for each session. 
 
+
   passport.serializeUser((user, cb) => {
-    cb(null, user._id);
+    cb(null, user);
   });
-  passport.deserializeUser((id: string, cb) => {
-    User.findOne({ _id: id }, (err: unknown, user: Express.User) => {
+  passport.deserializeUser((user:Express.User, cb) => {
+    User.findOne({ email: user.email }, (err: unknown, user: Express.User) => {
       cb(err, user);
     });
   });
